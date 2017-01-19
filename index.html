@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Pinboard.in Firefox Service</title>
+</head>
+<script>
+var loc = location.href;
+var baseurl = loc.substring(0,loc.lastIndexOf('/'));
+
+var data = {
+  // currently required
+  "name": "Pinboard.in",
+  "iconURL": baseurl+"/pinboard.gif",
+  "icon32URL": baseurl+"/pinboard_32.png",
+  "icon64URL": baseurl+"/pinboard_64.png",
+
+  // the URL of the contents for the share panel
+  "shareURL": "https://pinboard.in/add?url=%{url}&description=%{text}&title=%{title}",
+
+    // should be available for display purposes
+  "description": "Social Bookmarking for Introverts",
+  "author": "Gabriel Birke",
+  "homepageURL": "https://github.com/gbirke/pinboard-share-ff.git",
+  // optional
+  "version": "1.0"
+};
+
+function activate(node) {
+  if ( location.protocol !== 'https:' ) {
+    alert( "You must view this page via HTTPS" );
+    return;
+  }
+  var event = new CustomEvent("ActivateSocialFeature");
+  node.setAttribute("data-service", JSON.stringify(data));
+  node.dispatchEvent(event);
+}
+</script>
+<body>
+  <button onclick="activate(this)" title="activate the pinboard provider">Activate The Pinboard.in Provider</button>
+</body>
+</html>
